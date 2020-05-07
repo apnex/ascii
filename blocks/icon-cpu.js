@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const chalk = require('chalk');
+const colors = require('./colors.json');
 
 const sym = [
 	'\u{2588}', // '█'
@@ -8,42 +9,30 @@ const sym = [
 	'\u{0020}'  // ' '
 ];
 const styles = [
-	'black',
-	'lightgreen',
-	'lightblue',
-	'orange',
-	'red',
-	'grey'
+	//'mBlack',
+	'mLight-Green-900',
+	'mLight-Green-600',
+	'mLight-Green-300',
+	'mOrange-200',
+	'mLight-Blue-400',
+	'mRed-800',
+	'mBlack',
+	'mBlack'
 ];
 
 // grid
-var vm1 = [
-	[1,1,1,1,1,1],
-	[1,0,0,0,0,1],
-	[1,0,3,3,0,1],
-	[1,0,3,3,0,1],
-	[1,0,0,0,0,1],
-	[1,1,1,1,1,1]
-];
-var vm2 = [
-	[1,1,1,1,1,1],
-	[1,0,0,0,0,1],
-	[1,0,2,2,0,1],
-	[1,0,2,2,0,1],
-	[1,0,0,0,0,1],
-	[1,1,1,1,1,1]
-];
-var vm3 = [
-	[3,3,0,0,3,3],
-	[3,0,0,0,0,3],
-	[0,0,4,4,0,0],
-	[0,0,4,4,0,0],
-	[3,0,0,0,0,3],
-	[3,3,0,0,3,3]
-];
-renderGrid(vm1);
-renderGrid(vm3);
-renderGrid(vm2);
+render([
+	[1,1,1,7,1,1,1,1,1,1],
+	[1,2,1,1,1,0,0,0,0,1],
+	[1,0,4,4,4,4,4,4,0,1],
+	[1,0,4,4,4,4,4,4,0,1],
+	[1,0,4,4,4,4,4,4,0,1],
+	[1,0,4,4,4,4,4,4,0,1],
+	[1,0,4,4,4,4,4,4,0,1],
+	[1,0,4,4,4,4,4,4,0,1],
+	[1,0,1,1,1,0,0,0,0,1],
+	[1,1,1,7,1,1,1,1,1,1]
+]);
 
 // build ascii map
 function buildTerm(grid) {
@@ -63,10 +52,9 @@ function buildTerm(grid) {
 		grid[y].forEach((bit1, x) => {
 			let bit2 = grid[y + 1][x];
 			if(bit1 == bit2) {
-				//char = chalk.keyword(styles[5]).bgKeyword(styles[bit1])("+");
-				row.push(chalk.keyword(styles[5]).bgKeyword(styles[bit1])(sym[3]));
+				row.push(chalk.hex(colors[styles[5]]).bgHex(colors[styles[bit1]])(sym[3]));
 			} else {
-				row.push(chalk.keyword(styles[bit1]).bgKeyword(styles[bit2])(sym[1]));
+				row.push(chalk.hex(colors[styles[bit1]]).bgHex(colors[styles[bit2]])(sym[1]));
 			}
 		});
 		result.push(row);
@@ -75,7 +63,7 @@ function buildTerm(grid) {
 }
 
 // render
-function renderGrid(grid) {
+function render(grid) {
 	buildTerm(grid).forEach((row, y) => {
 		var string = "";
 		row.forEach((char, x) => {
